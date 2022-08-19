@@ -1,0 +1,44 @@
+pipeline
+{
+    agent any
+    stages
+    {
+        stage('1')
+        {
+            steps
+            {
+                git 'https://github.com/intelliqittrainings/maven.git'
+            }
+        }
+        stage('2')
+        {
+            steps
+            {
+                sh 'mvn package'
+            }
+        }
+        stage('3')
+          {
+         steps
+        {
+         sh 'scp /home/ubuntu/.jenkins/workspace/Declarativepipeline1/webapp/target/webapp.war ubuntu@172.31.33.40:/var/lib/tomcat9/webapps/testapp.war'   
+        }
+    }
+    stage('ct')
+    {
+        steps
+        {
+            git 'https://github.com/intelliqittrainings/FunctionalTesting.git'
+           sh 'java -jar /home/ubuntu/.jenkins/workspace/pipeline1/testing.jar' 
+        }
+    }
+    stage('condel')
+    {
+        steps
+        {
+       input message: 'nkjscsssmslsl', submitter: 'hari'
+   sh 'scp /home/ubuntu/.jenkins/workspace/Declarativepipeline1/webapp/target/webapp.war ubuntu@172.31.47.53:/var/lib/tomcat/webapps/prod.war'
+       }
+   }
+    }
+}
